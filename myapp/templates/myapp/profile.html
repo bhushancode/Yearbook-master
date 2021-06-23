@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{% block title %}Profile{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'myapp/css/main.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'myapp/css/util.css'%}">
+</head>
+<body>
+
+	{% block topbar %}
+	<div class="navbar-container">
+		<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+			<a class="navbar-brand" href="#"></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			  <ul class="navbar-nav">
+			  {% if dy %}
+				<li class="nav-item">
+					<a class="nav-link" href="/profile">Profile</a>
+				</li>
+	
+				<li class="nav-item">
+					<a class="nav-link" href="/otherComment">Received comments</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/answer">About You</a>
+				</li>
+				{% endif %}
+				<li class="nav-item">
+					<a class="nav-link" href="/comment">Write Comments</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/poll">Poll</a>
+				</li>
+				{% if dy %}
+				<li class="nav-item">
+					<a class="nav-link" href="/md">Memory Diary</a>
+				</li>
+				{% endif %}
+				<li class="nav-item logout-item">
+					<a class="nav-link" href="/logout">Logout</a>
+			   </li>
+			  </ul>
+			</div>
+		  </nav>
+	</div>
+
+	{% endblock %}
+	<div class="container-login100">
+		{% block body %}
+			<div class="container">
+					<center>
+				{% if user.genPic1 %}
+					<img style="margin:20px;height: 250px;width: auto;max-width: 50%;" class="img-responsive img-thumbnail" src={{user.genPic1.url}}>
+				{% endif %}
+				{% if user.genPic2 %}
+					<img style="margin:20px;height: 250px;width: auto;max-width: 50%;" class="img-responsive img-thumbnail" src={{user.genPic2.url}}>
+				{% endif %}
+					</center>
+			</div>
+
+			<div class="wrap-login100 p-l-25 p-r-25 p-t-50 p-b-30">
+			<form class="login100-form validate-form" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<span class="login100-form-title p-b-35">
+						Profile
+					</span>
+					{% if user.DP %}
+						<center><img style="margin:auto;height: auto;width: auto;max-width: 70%;" class="img-responsive img-thumbnail" src={{user.DP.url}}></center>
+					{% endif %}
+
+					<p style="text-align: center; color: red">{{image}}</p>
+					<p style="text-align: center; color: red">{{name}}</p>
+
+					<div class="wrap-input100 validate-input m-b-20 m-t-20">
+						<input style="color: black;background-color: #e0e0e0; border-radius: 20px" class="input100" type="text" name="name" placeholder="Name"  value="{{ user.name }}" readonly="readonly">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20">
+						<label style="color: #adabab;padding-left: 20px">Profile Picture: (max size 2MB) </label>
+						<input style="color: #adabab;"class="input100" type="file" name="dp">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20">
+						<span  class="focus-input100"></span>
+						<input style="color: black;background-color: #e0e0e0; border-radius: 20px" class="input100" type="text" name="department" placeholder="Department"  value="{{ user.get_department_display }}" readonly="readonly">
+					</div>
+					<div class="wrap-input100 validate-input m-b-20">
+						<input class="input100" type="text" name="phone" placeholder="Phone"  value="{{ user.phone }}">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20">
+						<input class="input100" type="email" name="email" placeholder="Email"  value="{{ user.email }}">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20">
+						<input class="input100" type="text" name="future" placeholder="Where are you headed next"  value="{{ user.future }}">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20">
+						<input class="input100" type="text" name="oneliner" placeholder="One line intro"  value="{{ user.oneliner }}">
+						<span class="focus-input100"></span>
+					</div>
+					{% comment %} <div class="wrap-input100 validate-input m-b-20">
+						<label style="color: #adabab;padding-left: 20px">Group Picture 1 (Optional): (max size 2MB)</label>
+						<input style="color: #adabab;"class="input100" type="file" name="genPic1">
+						<span class="focus-input100"></span>
+					</div>
+					<div class="wrap-input100 validate-input m-b-20">
+						<label style="color: #adabab;padding-left: 20px">Group Picture 2 (Optional): (max size 2MB) </label>
+						<input style="color: #adabab;"class="input100" type="file" name="genPic2">
+						<span class="focus-input100"></span>
+					</div> {% endcomment %}
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Save
+						</button>
+					</div>
+				</form>			
+			</div>
+
+<!-- 
+			<form method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<label>Group pic 1: </label>
+				<input type="file" name="genPic1">
+				<br>
+				<label>Group pic 2: </label>
+				<input type="file" name="genPic2">
+				<br>
+				<button>Edit</button>
+			</form> -->
+			
+
+		{% endblock %}
+	</div>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script 
+  	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" 
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" 
+	crossorigin="anonymous"></script>
+  <script type="text/javascript">
+  	$('input[type=file]').bind('change', function() {
+
+	  //this.files[0].size gets the size of your file.
+	  	if(parseInt(this.files[0].size) > 2000000){
+	  		alert("Please upload smaller images")
+	  		$('input[type=file]').val("")
+	  		// this.files=""
+	  		// this.val("")
+	  	}
+		});
+  </script>
+</html>
