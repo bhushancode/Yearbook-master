@@ -59,6 +59,7 @@ def index(request):
     #         else:
     #             return render(request, 'myapp/index.html',{'error_string':'Not found'})
     if request.user.is_authenticated:
+        
         return redirect('/profile')
 
     if request.method == 'POST':
