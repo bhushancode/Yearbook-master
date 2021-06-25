@@ -413,8 +413,8 @@ def md(request):
     # if request.user.is_superuser:
     #     dep = request.GET.get('department')
     # else:
-    dep = request.user.student.department
-        
+    # dep = request.user.student.department
+    
     departmentN=""
     if dep in departmentDic:
         departmentN = departmentDic[dep]
