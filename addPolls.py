@@ -1,3 +1,6 @@
+import os
+os.environ['DJANGO_SETTINGS_MODULE'] = 'Yearbook.settings'
+
 import django
 import csv
 django.setup()
@@ -7,7 +10,7 @@ poll_filename  = "./Scrape/polls.csv"
 
 depts = [
 
-		("eee", "Electrical"),
+		("all", "all"),
 	]
 
 

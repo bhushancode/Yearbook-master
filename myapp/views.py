@@ -58,7 +58,8 @@ def index(request):
     #             return redirect('/profile')
     #         else:
     #             return render(request, 'myapp/index.html',{'error_string':'Not found'})
-
+    if request.user.is_authenticated:
+        return redirect('/profile')
 
     if request.method == 'POST':
         return redirect(os.environ["authLinkPart1"] + os.environ["CLIENT_ID"] + os.environ["authLinkPart2"])
@@ -226,13 +227,15 @@ def poll(request):
     u = request.user
     VotesDisplay = u.student.VotesIHaveGiven
     if request.method == 'GET':
-        # users_all_a= User.objects.filter(is_superuser=False)
-        # user_all=users_all_a.filter(is_superuser=False)
+        users_all= User.objects.filter(is_superuser=False)
+        # user_all=users_all.filter(is_superuser=False)
         # # Same dept users
         # # dept_users = users_all.filter(student__department=u.student.department)
         # dept_users = users_all_a.all()
-        users_all=Student.objects.filter(graduating_year=2021)
+        # users_all=Student.objects.filter(graduating_year=2020)
         dept_users = users_all.all()
+        print(users_all)
+        print()
         # allPolls = Poll.objects.filter(department="all")
         # deptPolls = Poll.objects.filter(department=u.student.department)
         allPolls = Poll.objects.all()
@@ -251,35 +254,37 @@ def poll(request):
     ).select_for_update()
     print(entries, polls)
     # Fundamental check for double loops
-    for (entry, poll) in zip(entries, polls):
-        lowerEntry = entry.lower()
-        if lowerEntry == u.username.lower():
-            continue
-        try:
-            # Attempt and remove previous vote of current user for this poll
-            oldVotePresent = VotesDisplay[str(poll.id)]['username']
-            poll.votes[oldVotePresent] -= 1
-        except (KeyError, TypeError):
-            pass
-        otherUser = None
-        try:
-            otherUser = User.objects.get(username=lowerEntry)
-        except:
-            continue
-        try:
-            # otherUser already has votes, incremement it
-            poll.votes[lowerEntry] += 1
-        except KeyError:
-            if (poll.department.lower() == 'all') or (poll.department == otherUser.student.department):
-                poll.votes[lowerEntry] = 1
-            else:
+    if request.method =="POST":
+        print("posting polls")
+        for (entry, poll) in zip(entries, polls):
+            lowerEntry = entry.lower()
+            if lowerEntry == u.username.lower():
                 continue
-        u.student.VotesIHaveGiven[str(poll.id)] = {
-            'username': lowerEntry,
-            'name': otherUser.student.name
-        }
-        poll.save(update_fields=('votes',))
-        u.student.save(update_fields=('VotesIHaveGiven',))
+            try:
+                # Attempt and remove previous vote of current user for this poll
+                oldVotePresent = VotesDisplay[str(poll.id)]['username']
+                poll.votes[oldVotePresent] -= 1
+            except (KeyError, TypeError):
+                pass
+            otherUser = None
+            try:
+                otherUser = User.objects.get(username=lowerEntry)
+            except:
+                continue
+            try:
+                # otherUser already has votes, incremement it
+                poll.votes[lowerEntry] += 1
+            except KeyError:
+                if (poll.department.lower() == 'all') or (poll.department == otherUser.student.department):
+                    poll.votes[lowerEntry] = 1
+                else:
+                    continue
+            u.student.VotesIHaveGiven[str(poll.id)] = {
+                'username': lowerEntry,
+                'name': otherUser.student.name
+            }
+            poll.save(update_fields=('votes',))
+            u.student.save(update_fields=('VotesIHaveGiven',))
     return redirect("/poll")
         
 @login_required()
@@ -368,7 +373,7 @@ def otherComment(request):
 
 @login_required()
 def md(request):
-    dep="eee"
+    dep="all"
     departmentDic={
             "che": "Chemical",
             "che-idd": "Chemical IDD",

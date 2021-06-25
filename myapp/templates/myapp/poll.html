@@ -25,7 +25,10 @@
                 </div>
                 <datalist id="students2" scrollable>
                     {% for user in users %}
-                    <option value="{{user.username}}">{{user.student.name}}</option>
+                    {% if user.student.graduating_year == 2021 %}
+                    {% comment %} <option value="{{user.user}}">{{user.name}} </option> {% endcomment %}
+                    <option value="{{user.username}}" >{{user.student.name}} </option>
+                    {% endif %} 
                     {% endfor %}
                 </datalist>
             </form>
