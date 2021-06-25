@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -28,7 +27,6 @@ DEBUG = True
 LOGIN_URL = '/'
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
-
 
 # Application definition
 
@@ -50,7 +48,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
 ]
-SITE_ID = 2
+if DEBUG:
+    SITE_ID = 3
+else:
+    SITE_ID = 2
+
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 SOCIALACCOUNT_PROVIDERS = {
@@ -93,14 +95,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                "django.template.context_processors.request",   ## Required by django-allauth
+                "django.template.context_processors.request",  ## Required by django-allauth
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'Yearbook.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -140,7 +141,6 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -161,10 +161,17 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # HTML -> PDF
 import pdfkit.configuration
+
 try:
-    PDFKIT_CONFIG = pdfkit.configuration(
-        wkhtmltopdf='/usr/bin/wkhtmltopdf'
-    )
+    if DEBUG:
+        path = ''
+        PDFKIT_CONFIG = pdfkit.configuration(
+            wkhtmltopdf=path
+        )
+    else:
+        PDFKIT_CONFIG = pdfkit.configuration(
+            wkhtmltopdf='/usr/bin/wkhtmltopdf'
+        )
 except OSError as e:
     print('PDFKit configuration failed due to wkhtmltopdf. Continuing without it...')
 WKHTMLTOPDF_CMD_OPTIONS = {
@@ -174,7 +181,8 @@ WKHTMLTOPDF_CMD_OPTIONS = {
     'margin-top': '0',
     'margin-bottom': '0',
     'margin-left': '0',
-    'margin-right': '0'
+    'margin-right': '0',
+    'enable-local-file-access': None
 }
 
 # Internationalization
@@ -192,14 +200,12 @@ USE_TZ = True
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/myapp/static/'
-MEDIA_ROOT=os.path.join(BASE_DIR, 'media/myapp/static/myapp')
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/myapp/static/myapp')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'myapp/static')
 APPEND_SLASH = True
 FILE_UPLOAD_PERMISSIONS = 0o777
-LOGIN_REDIRECT_URL='/profile'
+LOGIN_REDIRECT_URL = '/profile'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-

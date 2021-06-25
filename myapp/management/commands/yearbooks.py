@@ -8,7 +8,7 @@ from django.core.management import base, call_command
 from myapp import DEPARTMENTS_MAP, models, utils
 
 logging.basicConfig(level=logging.DEBUG)
-COLLAGES_PATH = os.path.join(settings.MEDIA_ROOT, 'collages')
+# COLLAGES_PATH = os.path.join(settings.MEDIA_ROOT, 'collages')
 
 async def get_poll_votes(polls):
     result = list()
@@ -91,18 +91,18 @@ class Command(base.BaseCommand):
             domain=domain
         )
 
-        folder = os.path.join(COLLAGES_PATH, dep)
-        collage_urls = (
-            '/media/collages/%s/%s' % (dep, f) for f in os.listdir(folder)
-            if os.path.isfile(os.path.join(folder, f))
-        )
+        # folder = os.path.join(COLLAGES_PATH, dep)
+        # collage_urls = (
+        #     '/media/collages/%s/%s' % (dep, f) for f in os.listdir(folder)
+        #     if os.path.isfile(os.path.join(folder, f))
+        # )
 
         return {
             'base_url': base_url,
             'students': students_dep,
             'department': DEPARTMENTS_MAP[dep],
             # 'dept_photo': '/media/dept/{dep}.jpg'.format(dep=dep),
-            'collage_urls': collage_urls,
+            # 'collage_urls': collage_urls,
             'allPolls': all_polls,
             'deptPolls': dep_polls
         }

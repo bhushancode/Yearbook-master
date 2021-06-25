@@ -31,19 +31,19 @@
 </head>
 
 <body>
-    <div class="page">
+    <div class="page1">
         <div id="heading">
             <h1 class="absolute-center">Memory Diary</h1>
             <!-- <h2>To the looney toons we sang here...</h2> -->
             <!-- <h3>Add a department pic</h3> -->
         </div>
     </div>
-    <div class="page">
-        <div id="looney" class="absolute-center">
-            <h1>{{department}}</h1>
-            <h1>To the looney tunes we sang here...</h1>
-        </div>
-    </div>
+    
+{#    <div class="page">#}
+{#        <div id="looney" class="absolute-center">#}
+{#            <h1>To the looney tunes we sang here...</h1>#}
+{#        </div>#}
+{#    </div>#}
     {% if dept_photo %}
     <div class="page" id="departmentIntro">
         <!-- <h1>add the official group photo</h1> -->
@@ -55,7 +55,7 @@
             <!-- Use this for polls -->
             {% if allPolls %}
                 <section class="skills-section section">
-                    <h2 class="section-title"><i class="fa fa-comments"></i> General Polls</h2>
+                    <h2 class="section-title"><i class="fa fa-comments"></i>Polls</h2>
                     <div class="skillset"> 
                         <div class="pollrow">
                             {% for poll,votes in allPolls %}
@@ -73,28 +73,28 @@
                 </section>
             {% endif %}
             <hr>
-            {% if deptPolls %}
-            <!-- <div class="page"> -->
-                <section class="skills-section section">
-                    <h2 class="section-title"><i class="fa fa-comments"></i> Department Polls</h2>
-                    <div class="skillset">
-                        <div class="pollrow">
-                            {% for poll,votes in deptPolls %}
-                                <div style="padding: 0px" class="pollcol card">
-                                <div class="card-header">{{poll}}</div>
-                                <div class="card-body">
-                                    {% for ct,mem in votes %}
-                                        <li>{{mem}}</li>
-                                    {% endfor %}
-                                </div> 
-                                </div>
-                            {% endfor %}  
-                        </div>
-                    </div>  
-                </section>
-            {% else %}
-            <h2 class="section-title"><i class="fa fa-comments"></i> Department Polls (TBD) </h2>
-            {% endif %}
+{#            {% if deptPolls %}#}
+{#            <!-- <div class="page"> -->#}
+{#                <section class="skills-section section">#}
+{#                    <h2 class="section-title"><i class="fa fa-comments"></i> Department Polls</h2>#}
+{#                    <div class="skillset">#}
+{#                        <div class="pollrow">#}
+{#                            {% for poll,votes in deptPolls %}#}
+{#                                <div style="padding: 0px" class="pollcol card">#}
+{#                                <div class="card-header">{{poll}}</div>#}
+{#                                <div class="card-body">#}
+{#                                    {% for ct,mem in votes %}#}
+{#                                        <li>{{mem}}</li>#}
+{#                                    {% endfor %}#}
+{#                                </div> #}
+{#                                </div>#}
+{#                            {% endfor %}  #}
+{#                        </div>#}
+{#                    </div>  #}
+{#                </section>#}
+{#            {% else %}#}
+{#            <h2 class="section-title"><i class="fa fa-comments"></i> Department Polls (TBD) </h2>#}
+{#            {% endif %}#}
         </div>
     </div>
     {% for student in students %}
@@ -148,13 +148,14 @@
         </div>
     </div>
     {% endfor %}
-    {% if collage_urls %}
-    <div class="pages">
-        {% for collage_url in collage_urls %}
-        <img src="{{ base_url }}{{ collage_url }}" />
-        {% endfor %}
-    </div>
-    {% endif %}
+
+{#    {% if collage_urls %}#}
+{#    <div class="pages">#}
+{#        {% for collage_url in collage_urls %}#}
+{#        <img src="{{ base_url }}{{ collage_url }}" />#}
+{#        {% endfor %}#}
+{#    </div>#}
+{#    {% endif %}#}
 </body>
 </html> 
 
