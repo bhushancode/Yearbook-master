@@ -476,7 +476,7 @@ def md(request):
             dep_polls.append([p.poll,tmpVotes[0:ind]])
 
     context={"students":students_dep,"department":departmentN,"allPolls":all_polls,"deptPolls":dep_polls,}
-    return render(request, 'myapp/comingsoon.html',context)
+    return render(request, 'myapp/yearbook.html',context)
    
 
 
