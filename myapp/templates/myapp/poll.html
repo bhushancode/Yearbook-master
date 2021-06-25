@@ -29,6 +29,10 @@
                     {% comment %} <option value="{{user.user}}">{{user.name}} </option> {% endcomment %}
                     <option value="{{user.username}}" >{{user.student.name}} </option>
                     {% endif %} 
+                    {% if user.student.graduating_year == 2022 %}
+                    {% comment %} <option value="{{user.user}}">{{user.name}} </option> {% endcomment %}
+                    <option value="{{user.username}}" >{{user.student.name}} </option>
+                    {% endif %} 
                     {% endfor %}
                 </datalist>
             </form>

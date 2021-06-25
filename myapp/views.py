@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .models import *
-
+from itertools import chain
 import urllib3.contrib.pyopenssl
 urllib3.contrib.pyopenssl.inject_into_urllib3()
 
@@ -292,7 +292,10 @@ def poll(request):
 def comment(request):
     u = request.user
     users_all = User.objects.all()
-        # we pass this to display options, remove self user
+
+
+        
+                # we pass this to display options, remove self user
     myComments = u.student.CommentsIWrite
     gen_comments = []
     for c in myComments:
@@ -422,7 +425,10 @@ def md(request):
         departmentN = "all"
     GenQuestions = GenQuestion.objects.all()
     # students_dep = Student.objects.filter(department=dep)
-    students_dep = Student.objects.all()
+    students_dep1 = Student.objects.filter(graduating_year=2021)
+    students_dep2 = Student.objects.filter(graduating_year=2022)
+    students_dep=list(chain(students_dep1, students_dep2))
+    print(students_dep)
     for i in students_dep:
         gen_GenQuestions=list([])
         for q in GenQuestions:
@@ -432,7 +438,7 @@ def md(request):
         i.AnswersAboutMyself=list(gen_GenQuestions)
 
         gen_commentsIGet=list([])
-        '''
+        
         for a in i.CommentsIGet:
             if(User.objects.filter(username=a['fromWhom']).exists() and a['comment']!="" and a['displayInPdf']=="True"):
                 gen_commentsIGet.append([])
@@ -443,7 +449,7 @@ def md(request):
                         gen_commentsIGet[-1] = [a['comment'],""]
                 else:
                     gen_commentsIGet[-1] = [a['comment'],""]
-        '''
+        
 
         i.CommentsIGet=list(gen_commentsIGet)
 
@@ -457,6 +463,7 @@ def md(request):
                 Person=User.objects.filter(username=person)[0].student.name
             tmpVotes.append([int(count),Person])
         print(tmpVotes)
+        print("md/votes")
         tmpVotes.sort(reverse=True)
         ind = min(5,len(tmpVotes))
         if ind!=0:
